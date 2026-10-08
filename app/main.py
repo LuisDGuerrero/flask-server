@@ -1,4 +1,10 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
+
+productos = [
+    {"nombre": "Teclado Mecanico", "precio": 49.99, "disponible": True},
+    {"nombre": "Raton Optico", "precio": 19.99, "disponible": False},
+    {"nombre": "Monitor 4K", "precio": 299.99, "disponible": True},
+]
 
 # Inicializamos la aplicación
 app = Flask(__name__)
@@ -25,15 +31,15 @@ def multiplicar(n1, n2):
     return f"El resultado es igual a {n1 * n2}"
 
 
-@app.route("/catalogo/<int:id_product>")
-def catalogo(id_product):
-    productos = [
-        {"nombre": "Teclado Mecanico", "precio": 49.99, "disponible": True},
-        {"nombre": "Raton Optico", "precio": 19.99, "disponible": False},
-        {"nombre": "Monitor 4K", "precio": 299.99, "disponible": True},
-    ]
+@app.route("/catalogo")
+def catalogo():
+    return render_template("catalogo.html", nombre="algo", lista_productos=productos)
+
+
+@app.route("/catalogo/<int:idProducto>")
+def producto(idProducto):
     return render_template(
-        "catalogo.html", nombre="algo", id=id_product, lista_productos=productos
+        "producto.html", idProducto=idProducto, producto=productos[idProducto]
     )
 
 
